@@ -1,4 +1,6 @@
 import Image from 'next/image'
+import { Suspense } from 'react'
+import Albums from './Albums'
 
 interface PostsPagePageProps {}
 
@@ -24,16 +26,31 @@ const getDogData = async () => {
   return res.json()
 }
 
+function Loading() {
+  return <h2>🌀 Loading...</h2>
+}
+
 const PostsPagePage = async () => {
   const posts: PostsType = await getPostsData()
   const dog: { message: string } = await getDogData()
 
   return (
     <div>
-      <Image src={dog.message} alt="" width={100} height={100} />
-      {posts.map((posts) => (
-        <p key={posts.id}>{posts.title}</p>
-      ))}
+      {/*<Image src={dog.message} alt="" width={100} height={100} />*/}
+      <div className="grid grid-cols-4">
+        <Suspense fallback={<Loading />}>
+          <Albums artistId={'the-beatles'} delay={3} />
+        </Suspense>
+        <Suspense fallback={<Loading />}>
+          <Albums artistId={'the-beatles'} delay={5} />
+        </Suspense>
+        <Suspense fallback={<Loading />}>
+          <Albums artistId={'the-beatles'} delay={7} />
+        </Suspense>
+        <Suspense fallback={<Loading />}>
+          <Albums artistId={'the-beatles'} delay={9} />
+        </Suspense>
+      </div>
     </div>
   )
 }
